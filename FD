@@ -1,0 +1,37 @@
+-- เทคนิค Sound Stacking: สร้าง Sound เล่นพร้อมกัน 10 ตัวเพื่อให้ระดับความดังทวีคูณ
+local numberOfSounds = 10 
+local soundTable = {}
+
+for i = 1, numberOfSounds do
+    local sound = Instance.new("Sound")
+    sound.Parent = game:GetService("SoundService")
+    sound.SoundId = "rbxassetid://9069609200" -- ID เสียงกรีดร้อง
+    sound.Volume = 10 -- ปรับ Volume ของ Roblox ไว้ที่สูงสุด (10)
+    sound.Looped = true
+    sound.PlaybackSpeed = 1.2 -- ปรับความเร็วขึ้นนิดหน่อยให้เสียงแหลมสูงขึ้นและแสบหูขึ้น
+
+    -- เพิ่ม DistortionEffect เพื่อเร่งความพีคของย่านเสียงให้แตกและดังขึ้น
+    local distortion = Instance.new("DistortionSoundEffect")
+    distortion.Level = 0.8
+    distortion.Parent = sound
+
+    table.insert(soundTable, sound)
+end
+
+print("เริ่มเล่นเสียงกรีดร้องแบบขยายความดังสูงสุด...")
+
+-- สั่งเล่นเสียงทั้งหมดพร้อมกัน
+for _, sound in ipairs(soundTable) do
+    sound:Play()
+end
+
+-- รอเวลา 10 วินาที
+task.wait(10)
+
+-- หยุดเล่นเสียงทั้งหมดและทำลายทิ้ง
+for _, sound in ipairs(soundTable) do
+    sound:Stop()
+    sound:Destroy()
+end
+
+print("หยุดเล่นเสียงแล้ว")
